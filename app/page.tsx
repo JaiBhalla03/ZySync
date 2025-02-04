@@ -14,7 +14,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="bg-[#050505]">
+    <div className="bg-[#050505] font-poppins">
       {loading ? (
         <LoadingPage/>
       ) : (
