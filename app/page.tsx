@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from "react";
 import LoadingPage from "./components/LoadingPage";
+import Dashboard from "./components/Dashboard";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -13,13 +14,13 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="bg-[#141414]">
-      {!loading ? (
+    <div className="bg-[#050505]">
+      {loading ? (
         <LoadingPage/>
       ) : (
-        <div>
-          {/* Your actual page content goes here */}
-          <h1>Welcome to ZySync</h1>
+        <div className='h-screen'>
+          {/* now this is the real page which come after loading now for this it will first check with the user has login or not  */}
+          <Dashboard/>
         </div>
       )}
     </div>
