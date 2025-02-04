@@ -10,7 +10,7 @@ export default function Home() {
     // Simulating a data fetch or delay
     setTimeout(() => {
       setLoading(false); // Set loading to false after 3 seconds
-    }, 3000);
+    }, 1000);
   }, []);
 
   return (

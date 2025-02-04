@@ -45,14 +45,14 @@ export default function Dashboard() {
                                         <li key={section.title} className='border-b border-[#444444]'>
                                             <button
                                                 onClick={() => toggleSection(section.title)}
-                                                className='hover:bg-[#202020] transition-all duration-300 py-4 w-full text-center'
+                                                className={`transition-all duration-300 py-4 w-full text-center text-sm ${openSection === section.title ? 'bg-blue-400/50 text-white' : 'hover:bg-blue-400/50'}`}
                                             >
                                                 {section.title}
                                             </button>
                                             {openSection === section.title && (
                                                 <ul className="bg-[#1a1a1a]">
                                                     {section.options.map((option) => (
-                                                        <li key={option} className='py-2 px-6 hover:bg-[#2a2a2a] transition-all duration-300'>
+                                                        <li key={option} className='text-center py-2 px-6 hover:bg-[#2a2a2a] transition-all duration-300 text-xs'>
                                                             {option}
                                                         </li>
                                                     ))}
