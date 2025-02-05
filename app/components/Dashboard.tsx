@@ -1,20 +1,53 @@
+'use client';
 import Image from 'next/image'
 import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import userImage from '../../public/images/Ellipse 1.png';
 import {
     Sheet,
     SheetContent,
-    SheetHeader,
     SheetTrigger,
-  } from "@/components/ui/sheet"
+} from "@/components/ui/sheet"
 import Logo from './utils/Logo';
 import { Button } from '@/components/ui/button';
 
+// Simulate user role (Change this dynamically based on authentication)
+const userRole:String = "employee"; // Change to "admin" for admin dashboard
+
+type Section = {
+    title: string;
+    options?: string[]; // Optional property
+};
+
+
 export default function Dashboard() {
     const [openSection, setOpenSection] = useState<string | null>(null);
+    const router = useRouter();
 
     const toggleSection = (section: string) => {
         setOpenSection(openSection === section ? null : section);
+    };
+
+    const adminSections: Section[] = [
+        { title: 'Employee Management'},
+        { title: 'Employee Tracking', options: ['View Schedules', 'Analyze Performance', 'Track Doctor Visits'] },
+        { title: 'Doctor Management'},
+        { title: 'Sales Performance'},
+        { title: 'Approve Leave'}, // No options, should go directly
+        { title: 'System & Security', options: ['Reset Passwords', 'Change Admin Credentials'] }
+    ];
+
+    const employeeSections: Section[] = [
+        { title: 'Update Profile'},
+        { title: 'Add Doctors' },
+        { title: 'Plan Schedule' },
+        { title: 'Check Leaderboard' },
+        { title: 'Apply For Leave'}
+    ];
+
+    const handleNavigation = (path: string) => {
+        const route = path.toLowerCase().replace(/\s+/g, '-'); // Convert to URL-friendly format
+        router.push(`/${route}`);
     };
 
     return (
@@ -35,24 +68,22 @@ export default function Dashboard() {
                             </div>
                             <div>
                                 <ul>
-                                    {[
-                                        { title: 'Employee Management', options: ['Add New Employee', 'Edit Employee Details', 'Remove Employee', 'Search Employee'] },
-                                        { title: 'Employee Tracking', options: ['View Schedules', 'Analyze Performance', 'Track Doctor Visits', 'Monitor Consistency'] },
-                                        { title: 'Doctor Management', options: ['View Doctors', 'Search Doctors', 'Assign Employees', 'Doctors Visit Logs'] },
-                                        { title: 'Sales & Regional Performance', options: ['Track Sales By Region'] },
-                                        { title: 'System & Security', options: ['Reset Passwords', 'Change Admin Credentials'] }
-                                    ].map((section) => (
+                                    {(userRole === "admin" ? adminSections : employeeSections).map((section) => (
                                         <li key={section.title} className='border-b border-[#444444]'>
+                                            {/* If no options, navigate directly */}
                                             <button
-                                                onClick={() => toggleSection(section.title)}
+                                                onClick={() => section.options ? toggleSection(section.title) : handleNavigation(section.title)}
                                                 className={`transition-all duration-300 py-4 w-full text-center text-sm ${openSection === section.title ? 'bg-blue-400/50 text-white' : 'hover:bg-blue-400/50'}`}
                                             >
                                                 {section.title}
                                             </button>
-                                            {openSection === section.title && (
+                                            {/* If section has options, show them */}
+                                            {openSection === section.title && section.options && (
                                                 <ul className="bg-[#1a1a1a]">
                                                     {section.options.map((option) => (
-                                                        <li key={option} className='text-center py-2 px-6 hover:bg-[#2a2a2a] transition-all duration-300 text-xs'>
+                                                        <li key={option} className='cursor-pointer text-center py-2 px-6 hover:bg-[#2a2a2a] transition-all duration-300 text-xs'
+                                                            onClick={() => handleNavigation(option)}
+                                                        >
                                                             {option}
                                                         </li>
                                                     ))}
